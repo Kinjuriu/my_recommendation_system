@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "recommender-system"
+version = "0.1.0"
+description = "Movie recommendation system"
+authors = ["Kinjuriu <stephanenjokingugi@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "../recommender_system"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^1.5.2"
+pip = "^22.3.1"
+surprise = "^0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
