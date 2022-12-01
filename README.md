@@ -5,6 +5,6 @@ Netflix is one of the most popular media and video streaming platforms. They ha
 * A Similarity-Based Collaborative Filtering system
 * A Matrix Factorization Based Collaborative Filtering system
 
-## Setting Uo
+## Setting Up
 
 ## Running the model
