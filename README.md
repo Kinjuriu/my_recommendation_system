@@ -6,5 +6,6 @@ Netflix is one of the most popular media and video streaming platforms. They ha
 * A Matrix Factorization Based Collaborative Filtering system
 
 ## Setting Up
+This repo has been set up using pyscaffold and poetry
 
 ## Running the model
