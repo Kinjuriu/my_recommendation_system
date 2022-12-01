@@ -4,3 +4,8 @@ Netflix is one of the most popular media and video streaming platforms. They ha
 * A Knowledge/Rank based recommendation system
 * A Similarity-Based Collaborative Filtering system
 * A Matrix Factorization Based Collaborative Filtering system
+
+## Setting Up
+This repo has been set up using pyscaffold and poetry
+
+## Running the model
