@@ -1,5 +1,5 @@
 # build a similarity-based recommendation systems using cosine similarity
-# use KNN to find similar users which are the nearest neighbor to the given user
+# use KNN to find similar users which are the nearest neighbor to the given userid
 
 
 # Installing surprise library
@@ -24,6 +24,19 @@ from surprise.model_selection import KFold
 
 def get_recommendations(data, user_id, top_n, algo):
     
+    """
+    Generates recommendations for a given user using the specified recommendation algorithm.
+    
+    Args:
+        data (pandas.DataFrame): The data frame containing the user-item interactions.
+        user_id (int): The user ID for which recommendations should be generated.
+        top_n (int): The number of recommendations to generate.
+        algo (obj): The recommendation algorithm to use.
+        
+    Returns:
+        list: A list of tuples containing the recommended movie IDs and their predicted ratings.
+    """
+
     # Creating an empty list to store the recommended movie ids
     recommendations = []
     
