@@ -1,10 +1,6 @@
 # build a similarity-based recommendation systems using cosine similarity
 # use KNN to find similar users which are the nearest neighbor to the given userid
 
-
-# Installing surprise library
-#!pip install surprise
-
 # A performance metrics in surprise
 from surprise import accuracy
 # Class will be used to parse a file containing ratings, data should be in structure - user ; item ; rating
@@ -59,3 +55,33 @@ def get_recommendations(data, user_id, top_n, algo):
     recommendations.sort(key=lambda x: x[1], reverse=True)
 
     return recommendations[:top_n] # returing top n highest predicted rating movies for this user
+
+def perform_tuning_and_rmse(data):
+    """
+    This function performs hyperparameter tuning for the KNN algorithm and
+    returns the best rmse score and the combination of hyperparameters that gave the best score.
+    """
+    param_grid = {
+        'k': [20, 30, 40],
+        'min_k': [3, 6, 9],
+        'sim_options': {
+            'name': ['msd', 'cosine'],
+            'user_based': [True]
+        }
+    }
+    grid_obj = GridSearchCV(KNNBasic, param_grid, measures=['rmse', 'mae'], cv=3, n_jobs=-1)
+    grid_obj.fit(data)
+    best_rmse_score = grid_obj.best_score['rmse']
+    best_params = grid_obj.best_params['rmse']
+    return best_rmse_score, best_params
+
+def build_final_model(trainset, testset, sim_options):
+    """
+    This function builds the final KNN model with optimal hyperparameters and returns
+    the rmse score on the test set.
+    """
+    similarity_algo_optimized_user = KNNBasic(sim_options=sim_options, k=40, min_k=6, verbose=False)
+    similarity_algo_optimized_user.fit(trainset)
+    predictions = similarity_algo_optimized_user.test(testset)
+    rmse = accuracy.rmse(predictions)
+    return rmse

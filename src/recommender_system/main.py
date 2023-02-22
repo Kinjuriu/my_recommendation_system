@@ -47,6 +47,13 @@ rating_count = cleaned_ratings.groupby('movieId')['rating'].count()
 # Create a dataframe with the average ratings and rating counts
 final_rating = pd.DataFrame({'avg_rating': avg_rating, 'rating_count': rating_count})
 
+if __name__ == "__main__":
+    cleaned_ratings = load_data()
+    
+    print(recommend_movies_based_on_popularity(cleaned_ratings, 5, 50))
+    print(recommend_movies_based_on_popularity(cleaned_ratings, 5, 100))
+    
+    recommend_movies_based_on_similarity(cleaned_ratings, 5, 4)
 
 # Recommend top 5 movies with 50 minimum interactions based on popularity
 print(list(get_top_movies(final_rating, 5, 50)))
