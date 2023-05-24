@@ -1,51 +1,33 @@
-# Data pre-processing
 import pandas as pd
+import numpy as np
 
-from numpy import unique
+def pre_process_data(ratings: pd.DataFrame) -> pd.DataFrame:
+    """
+    Pre-process the ratings dataframe.
 
+    Parameters
+    ----------
+    ratings : pd.DataFrame
+        The input ratings dataframe.
 
-# PREVIEW
-def preProcessing(ratings):
-    ratings.info()  # Checking the info of the dataset
-    #There are 100,004 observations and 4 columns in the data
+    Returns
+    -------
+    pd.DataFrame
+        The pre-processed dataframe.
+    """
+    # Keep only numeric columns
+    ratings = ratings.select_dtypes(include=["int16", "int32", "int64", "float16", "float32", "float64"])
 
-    #Drop columns that are not numeric
-    # Get numerical columns only from the dataframe
-    numerics = ["int16", "int32", "int64", "float16", "float32", "float64"]
-    ratings = ratings.select_dtypes(include=numerics)
+    # Drop columns with only one unique value
+    to_del = [i for i, v in enumerate(ratings.nunique()) if v == 1]
+    ratings.drop(ratings.columns[to_del], axis=1, inplace=True)
 
-    #zero-variance predictors
-    counts = ratings.nunique()
-    to_del = [i for i,v in enumerate(counts) if v == 1]
-    print(to_del)
-    # drop useless columns
-    ratings.drop(to_del, axis=1, inplace=True)   
-
-    # counts = ratings.nunique()
-    # #Few-value columns
-    # # record columns to delete
-    # to_del = [i for i,v in enumerate(counts) if (float(v)/ratings.shape[0]*100) < 1] 
-    # print("before")
-    # print(to_del)
-    # print("after")
-    # # drop useless columns
-    # if(len(to_del)>0):
-    #     ratings.drop(to_del, axis=1, inplace=True)   
-
-    #data deduplication
-    # delete duplicate rows 
-    # ratings.drop_duplicates(inplace=True) 
-    
-    #Missing values 
-    #checking for null values
-    # print(ratings.isnull().sum().sum())  # zero null values
+    # Replace empty values with NaN
     sum_of_null_values = ratings.isnull().sum().sum()
-  
-    if(sum_of_null_values>1):
-        ratings.replace("", np.nan, regex=False, inplace=True)  # replace the dashes with Nan
+    if sum_of_null_values > 0:
+        ratings.replace("", np.nan, regex=False, inplace=True)
 
-    # Dropping the timestamp column
-    ratings.drop(['timestamp'], axis=1, inplace=True)
+    # Drop timestamp column
+    ratings.drop(["timestamp"], axis=1, inplace=True)
+
     return ratings
-    # ratings.info()
- 
